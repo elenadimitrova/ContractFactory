@@ -1,16 +1,22 @@
 /*
   IMPLEMENTING TOKEN STANDARD BASED ON: https://github.com/ConsenSys/Tokens
 */
-
-import "ITokenLedger.sol";
-
-contract TokenLedger is ITokenLedger {
+contract TokenLedger {
 
   function TokenLedger()
-  refundEtherSentByAccident
   {
 
   }
+
+  uint256 total_supply;
+  bytes32 public title;
+  bytes4 public symbol;
+
+  mapping (address => uint256) balances;
+  mapping (address => mapping (address => uint256)) allowed;
+
+  event Transfer(address indexed _from, address indexed _to, uint256 indexed _value);
+  event Approval(address indexed _owner, address indexed _spender, uint256 indexed _value);
 
   /// @notice verifies if the sender has enough balance, otherwise, raises an error
   /// @param _from sender of value
@@ -37,7 +43,6 @@ contract TokenLedger is ITokenLedger {
   /// @notice set the TokenLedger symbol
   /// @param _symbol the symbol of the Organisation Share
   function setSharesSymbol(bytes4 _symbol)
-  refundEtherSentByAccident
   {
     symbol = _symbol;
   }
@@ -45,7 +50,6 @@ contract TokenLedger is ITokenLedger {
   /// @notice set the TokenLedger title
   /// @param _title the title of the Organisation Share
   function setSharesTitle(bytes32 _title)
-  refundEtherSentByAccident
   {
     title = _title;
   }
@@ -54,7 +58,6 @@ contract TokenLedger is ITokenLedger {
   /// @param _to The address of the recipient
   /// @param _value The amount of token to be transferred
   function transfer(address _to, uint256 _value)
-  refundEtherSentByAccident
   hasEnoughBalance(msg.sender, _value)
   {
       balances[msg.sender] -= _value;
@@ -68,7 +71,6 @@ contract TokenLedger is ITokenLedger {
   /// @param _to The address of the recipient
   /// @param _value The amount of token to be transferred
   function transferFrom(address _from, address _to, uint256 _value)
-  refundEtherSentByAccident
   hasEnoughBalance(_from, _value)
   hasEnoughAllowedBalance(_from, _value)
   {
@@ -84,7 +86,6 @@ contract TokenLedger is ITokenLedger {
   /// @param _spender The address of the account able to transfer the tokens
   /// @param _value The amount of wei to be approved for transfer
   function approve(address _spender, uint256 _value)
-  refundEtherSentByAccident
   {
     if(_value > total_supply) throw;
 
@@ -96,7 +97,6 @@ contract TokenLedger is ITokenLedger {
   /// @param _spender The address of the account able to transfer the tokens
   /// @return Amount of remaining tokens allowed to spent
   function allowance(address _owner, address _spender)
-  refundEtherSentByAccident
   constant returns (uint256 remaining)
   {
     return allowed[_owner][_spender];
@@ -105,7 +105,6 @@ contract TokenLedger is ITokenLedger {
   /// @param _owner The address from which the balance will be retrieved
   /// @return The balance
   function balanceOf(address _owner)
-  refundEtherSentByAccident
   constant returns (uint256 balance)
   {
     return balances[_owner];
@@ -115,19 +114,16 @@ contract TokenLedger is ITokenLedger {
   /// and assign it to the contract owner.
   /// @param _amount The amount to be increased in the upper bound total_supply
   function generateShares(uint256 _amount)
-  onlyOwner
-  refundEtherSentByAccident
   {
       if(_amount == 0) throw;
       if (total_supply + _amount < _amount) throw;
 
       total_supply += _amount;
-      balances[owner] += _amount;
+      //balances[owner] += _amount;
   }
 
   /// @return total amount of tokens
   function totalSupply()
-  refundEtherSentByAccident
   constant returns (uint256 _total)
   {
     return total_supply;

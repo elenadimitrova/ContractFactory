@@ -1,10 +1,8 @@
+import "TaskDB.sol";
+import "ParentResolver.sol";
+import "TokenLedger.sol";
 
-import "Modifiable.sol";
-import "ITaskDB.sol";
-import "IParentResolver.sol";
-import "ITokenLedger.sol";
-
-contract Organisation is Modifiable {
+contract Organisation {
 
   // Event to raise when a Task is completed and paid
   event TaskCompletedAndPaid (address _from, address indexed _to, uint256 indexed _ethValue, uint256 indexed _sharesValue);
@@ -19,9 +17,9 @@ contract Organisation is Modifiable {
 		bool admin;  // if true, that person is an admin
 	}
 
-  IParentResolver public ParentResolver;
-  ITokenLedger public shareLedger;
-  ITaskDB public taskDB;
+  ParentResolver public parentResolver;
+  TokenLedger public shareLedger;
+  TaskDB public taskDB;
 
  	// This declares a state variable that
 	// stores a `User` struct for each possible address.
@@ -33,28 +31,24 @@ contract Organisation is Modifiable {
     address _tasksDBAddress)
   {
     users[tx.origin].admin = true;
-    ParentResolver = IParentResolver(ParentResolverAddress_);
-    shareLedger = ITokenLedger(_shareLedgerAddress);
-    taskDB = ITaskDB(_tasksDBAddress);
+    parentResolver = ParentResolver(ParentResolverAddress_);
+    shareLedger = TokenLedger(_shareLedgerAddress);
+    taskDB = TaskDB(_tasksDBAddress);
   }
 
   /// @notice registers a new ParentResolver contract.
   /// Used to keep the reference of the Parent.
   /// @param ParentResolverAddress_ the ParentResolver address
   function registerParentResolver(address ParentResolverAddress_)
-  onlyOwner
-  throwIfAddressIsInvalid(ParentResolverAddress_)
   {
-    ParentResolver = IParentResolver(ParentResolverAddress_);
+    parentResolver = ParentResolver(ParentResolverAddress_);
   }
 
   /// @notice registers a new ITaskDB contract
   /// @param _tasksDBAddress the address of the ITaskDB
   function registerTaskDB(address _tasksDBAddress)
-  onlyOwner
-  throwIfAddressIsInvalid(_tasksDBAddress)
   {
-    taskDB = ITaskDB(_tasksDBAddress);
+    taskDB = TaskDB(_tasksDBAddress);
   }
 
   /// @notice contribute ETH to a task
@@ -80,8 +74,6 @@ contract Organisation is Modifiable {
   /// @notice this function is used to generate Organisation shares
   /// @param _amount The amount of shares to be generated
   function generateOrganisationShares(uint256 _amount)
-  onlyOwner
-  refundEtherSentByAccident
   {
     shareLedger.generateShares(_amount);
   }
@@ -89,7 +81,7 @@ contract Organisation is Modifiable {
   function getParent()
   constant returns(address)
   {
-    return ParentResolver.ParentAddress();
+    return parentResolver.ParentAddress();
   }
 
   /// @notice this function adds a task to the task DB.
@@ -99,7 +91,6 @@ contract Organisation is Modifiable {
     string _name,
     string _summary
   )
-  throwIfIsEmptyString(_name)
   {
       taskDB.makeTask(_name, _summary);
   }
@@ -107,7 +98,6 @@ contract Organisation is Modifiable {
   /// @notice this function updates the 'accepted' flag in the task
   /// @param _id the task id
   function acceptTask(uint256 _id)
-  onlyOwner
   {
     taskDB.acceptTask(_id);
   }
@@ -121,7 +111,6 @@ contract Organisation is Modifiable {
     string _name,
     string _summary
   )
-  throwIfIsEmptyString(_name)
   {
     taskDB.updateTask(_id, _name, _summary);
   }
@@ -129,8 +118,6 @@ contract Organisation is Modifiable {
   /// @notice set the Organisation shares symbol
   /// @param symbol_ the symbol of the Organisation shares
   function setSharesSymbol(bytes4 symbol_)
-  refundEtherSentByAccident
-  onlyOwner
   {
     shareLedger.setSharesSymbol(symbol_);
   }
@@ -138,8 +125,6 @@ contract Organisation is Modifiable {
   /// @notice set the Organisation shares title
   /// @param title_ the title of the Organisation shares
   function setSharesTitle(bytes32 title_)
-  refundEtherSentByAccident
-  onlyOwner
   {
     shareLedger.setSharesTitle(title_);
   }
@@ -152,7 +137,6 @@ contract Organisation is Modifiable {
 
   //Mark a task as completed, pay a user, pay root Organisation fee
   function completeAndPayTask(uint256 taskId, address paymentAddress)
-  onlyOwner
   {
 
     var isTaskAccepted = taskDB.isTaskAccepted(taskId);

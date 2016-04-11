@@ -1,15 +1,11 @@
-
-import "ITaskDB.sol";
-
-contract TaskDB is ITaskDB {
+contract TaskDB {
 
   event ReceivedShares(uint256 indexed taskId, uint256 indexed amount, uint256 indexed when);
   event ReceivedEther(uint256 indexed taskId, uint256 indexed amount, uint256 indexed when);
   event TaskAdded(uint256 indexed id, uint256 indexed when);
   event TaskUpdated(uint256 indexed id, uint256 indexed when);
 
-  function TaskDB()
-  refundEtherSentByAccident {
+  function TaskDB() {
   }
 
   modifier ifTasksExists(uint256 _id) {
@@ -37,8 +33,6 @@ contract TaskDB is ITaskDB {
     string _name,
     string _summary
   )
-  onlyOwner
-  throwIfIsEmptyString(_name)
   {
     var taskId = tasks.length++;
     tasks[taskId] = Task({
@@ -69,7 +63,6 @@ contract TaskDB is ITaskDB {
   /// @param _id the task id
   /// @return a flag indicating if the task was accepted or not
   function isTaskAccepted(uint256 _id)
-  ifTasksExists(_id)
   constant returns(bool)
   {
     return (tasks[_id].accepted);
@@ -79,7 +72,6 @@ contract TaskDB is ITaskDB {
   /// @param _id the task id
   /// @return the amount of ether and the amount of shares funding a task
   function getTaskBalance(uint256 _id)
-  ifTasksExists(_id)
   constant returns(uint256 _ether, uint256 _shares)
   {
     var task = tasks[_id];
@@ -89,8 +81,6 @@ contract TaskDB is ITaskDB {
   /// @notice this function updates the 'accepted' flag in the task
   /// @param _id the task id
   function acceptTask(uint256 _id)
-  onlyOwner
-  ifTasksExists(_id)
   {
     if(tasks[_id].accepted) throw;
     tasks[_id].accepted = true;
@@ -105,9 +95,6 @@ contract TaskDB is ITaskDB {
     string _name,
     string _summary
   )
-  onlyOwner
-  ifTasksExists(_id)
-  throwIfIsEmptyString(_name)
   {
     if(tasks[_id].accepted) throw;
 
@@ -123,7 +110,6 @@ contract TaskDB is ITaskDB {
   /// a hash pointing to the summary of a task (IPFS hash), the amount of ether
   /// it holds, the amount of shares it holds
   function getTask(uint256 _id)
-  ifTasksExists(_id)
   constant returns (
       string _name,
       string _summary,
@@ -146,8 +132,6 @@ contract TaskDB is ITaskDB {
   /// @param _id the task id
   /// @param _amount the amount to contribute
   function contributeEth(uint256 _id, uint256 _amount)
-  onlyOwner
-  ifTasksExists(_id)
   {
     if(tasks[_id].eth + _amount <= tasks[_id].eth) throw;
     if(tasks[_id].accepted) throw;
@@ -160,8 +144,6 @@ contract TaskDB is ITaskDB {
   /// @param _id the task id
   /// @param _amount the amount of shares to contribute
   function contributeShares(uint256 _id, uint256 _amount)
-  onlyOwner
-  ifTasksExists(_id)
   {
     if(tasks[_id].shares + _amount <= tasks[_id].shares) throw;
     if(tasks[_id].accepted) throw;

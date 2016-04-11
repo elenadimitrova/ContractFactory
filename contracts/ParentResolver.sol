@@ -1,11 +1,8 @@
+contract ParentResolver {
 
-import 'IParentResolver.sol';
-import 'CoreLibrary.sol';
-
-contract ParentResolver is IParentResolver {
+  address public ParentAddress;
 
   function ParentResolver()
-  refundEtherSentByAccident
   {
 
   }
@@ -13,8 +10,6 @@ contract ParentResolver is IParentResolver {
   /// @notice this function takes an address (Supposedly, the Parent address)
   /// @param _ParentAddress the Parent address
   function registerParent(address _ParentAddress)
-  refundEtherSentByAccident
-  onlyOwner
   {
     ParentAddress = _ParentAddress;
   }
