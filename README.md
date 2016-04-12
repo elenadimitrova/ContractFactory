@@ -3,4 +3,4 @@ Issue demo of contract creation where a suspected out-of-gas error occurs but it
 
 # How to reproduce that behavior?
 
-This is a truffle project so you can just use `truffle test` to see tests results. Both tests fail, this problem has been reproduced using both `ethereumjs-testrpc` and `geth`
+This is a truffle project so you can just use `truffle test` to see tests results. Both tests fail, this problem has been reproduced using both `ethereumjs-testrpc` and `geth`.
