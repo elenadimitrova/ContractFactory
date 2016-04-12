@@ -1,12 +1,11 @@
 {
   "deploy": [
     // Names of contracts that should be deployed to the network.
-    "TokenLedger",
-    "Parent",
+    "BloatedParent",
+    "ExpensiveParent",
     "ParentResolver",
-    "TaskDB",
-    "OrganisationFactory",
-    "Organisation"
+    "ExpensiveFactory",
+    "BloatedFactory"
   ],
   "rpc": {
     // Default RPC configuration.

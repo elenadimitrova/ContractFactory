@@ -1,6 +1,6 @@
 contract ParentResolver {
 
-  address public ParentAddress;
+  address public parentAddress;
 
   function ParentResolver()
   {
@@ -11,7 +11,7 @@ contract ParentResolver {
   /// @param _ParentAddress the Parent address
   function registerParent(address _ParentAddress)
   {
-    ParentAddress = _ParentAddress;
+    parentAddress = _ParentAddress;
   }
 
   function () {

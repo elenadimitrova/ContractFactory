@@ -5,10 +5,10 @@
 (function() {
 
   var contract_data = {
-    abi: [{"constant":true,"inputs":[],"name":"ParentAddress","outputs":[{"name":"","type":"address"}],"type":"function"},{"constant":false,"inputs":[{"name":"_ParentAddress","type":"address"}],"name":"registerParent","outputs":[],"type":"function"},{"inputs":[],"type":"constructor"}],
-    binary: "606060405260798060106000396000f36060604052361560275760e060020a60003504635beb8a318114602d578063baa0ad1114604b575b606d6002565b606f60005473ffffffffffffffffffffffffffffffffffffffff1681565b6000805473ffffffffffffffffffffffffffffffffffffffff19166004351790555b005b6060908152602090f3",
-    unlinked_binary: "606060405260798060106000396000f36060604052361560275760e060020a60003504635beb8a318114602d578063baa0ad1114604b575b606d6002565b606f60005473ffffffffffffffffffffffffffffffffffffffff1681565b6000805473ffffffffffffffffffffffffffffffffffffffff19166004351790555b005b6060908152602090f3",
-    address: "0x1b97435cebf6063dc27ad00ad730b5a57e932071",
+    abi: [{"constant":true,"inputs":[],"name":"parentAddress","outputs":[{"name":"","type":"address"}],"type":"function"},{"constant":false,"inputs":[{"name":"_ParentAddress","type":"address"}],"name":"registerParent","outputs":[],"type":"function"},{"inputs":[],"type":"constructor"}],
+    binary: "606060405260788060106000396000f36060604052361560265760e060020a6000350462821de38114602c578063baa0ad1114604a575b606c6002565b606e60005473ffffffffffffffffffffffffffffffffffffffff1681565b6000805473ffffffffffffffffffffffffffffffffffffffff19166004351790555b005b6060908152602090f3",
+    unlinked_binary: "606060405260788060106000396000f36060604052361560265760e060020a6000350462821de38114602c578063baa0ad1114604a575b606c6002565b606e60005473ffffffffffffffffffffffffffffffffffffffff1681565b6000805473ffffffffffffffffffffffffffffffffffffffff19166004351790555b005b6060908152602090f3",
+    address: "0x75e96fb4ccd53f70d29b892ce30ae30076cc7657",
     generated_with: "2.0.6",
     contract_name: "ParentResolver"
   };

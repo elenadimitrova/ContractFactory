@@ -4,9 +4,9 @@ Implements ERC 20 Token standard: https://github.com/ethereum/EIPs/issues/20
 
 import "Token.sol";
 
-contract TokenLedger is Token {
+contract AnotherTokenLedger is Token {
 
-    function TokenLedger(uint256 _initialAmount) {
+    function AnotherTokenLedger(uint256 _initialAmount) {
         balances[msg.sender] = _initialAmount;
         totalSupply = _initialAmount;
     }
