@@ -8,7 +8,6 @@ contract('Organisation', function (accounts) {
   var _MAIN_ACCOUNT_ = accounts[0];
   var _OTHER_ACCOUNT_ = accounts[1];
   var _Organisation_KEY_ = 'Organisation_TEST';
-  var organisationFactory;
   var parent;
   var parentResolver;
   var ifUsingTestRPC = testHelper.ifUsingTestRPC;
@@ -16,27 +15,26 @@ contract('Organisation', function (accounts) {
   var organisationTaskDb;
 
   before(function(done){
-    parent = Parent.deployed();
-    console.log('Parent deployed: ', Parent.address);
-    parentResolver = ParentResolver.deployed();
-    console.log('ParentResolver deployed: ', ParentResolver.address);
-    organisationFactory = OrganisationFactory.deployed();
-    console.log('OrganisationFactory: ', organisationFactory.address);
-
-    parentResolver.registerParent(Parent.address)
-    .then(function(){
-      organisationFactory.registerParentResolver(ParentResolver.address);
+    Parent.new()
+    .then(function(_parent){
+      parent = _parent;
+      console.log('Parent created: ', parent.address);
     })
-    .then(function(){
-      parent.registerOrganisationFactory(organisationFactory.address);
-      done();
+    .then(done)
+    .catch(done);
     });
-  });
 
   beforeEach(function(done){
-    parent.createOrganisation(_Organisation_KEY_, {from: _MAIN_ACCOUNT_})
-    .then(function(){
-      return parent.getOrganisation(_Organisation_KEY_);
+    parent.createOrganisation(_Organisation_KEY_,
+      {
+        from: _MAIN_ACCOUNT_,
+        value: 1,
+        gas: 1e6,
+        gasPrice: 20e9
+      })
+    .then(function(t){
+      console.log("Maybe something useful", t);
+      return parent.getOrganisation.call(_Organisation_KEY_);
     })
     .then(function(organisation_){
       console.log('Organisation address: ', organisation_);

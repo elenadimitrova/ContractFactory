@@ -1,10 +1,8 @@
 import "TaskDB.sol";
-import "ParentResolver.sol";
 import "TokenLedger.sol";
 
 contract Organisation {
 
-  // Event to raise when a Task is completed and paid
   event TaskCompletedAndPaid (address _from, address indexed _to, uint256 indexed _ethValue, uint256 indexed _sharesValue);
 
   modifier onlyOwner {
@@ -17,7 +15,7 @@ contract Organisation {
 		bool admin;  // if true, that person is an admin
 	}
 
-  ParentResolver public parentResolver;
+  address public parentResolver;
   TokenLedger public shareLedger;
   TaskDB public taskDB;
 
@@ -31,17 +29,9 @@ contract Organisation {
     address _tasksDBAddress)
   {
     users[tx.origin].admin = true;
-    parentResolver = ParentResolver(ParentResolverAddress_);
+    parentResolver = ParentResolverAddress_;
     shareLedger = TokenLedger(_shareLedgerAddress);
     taskDB = TaskDB(_tasksDBAddress);
-  }
-
-  /// @notice registers a new ParentResolver contract.
-  /// Used to keep the reference of the Parent.
-  /// @param ParentResolverAddress_ the ParentResolver address
-  function registerParentResolver(address ParentResolverAddress_)
-  {
-    parentResolver = ParentResolver(ParentResolverAddress_);
   }
 
   /// @notice registers a new ITaskDB contract
@@ -70,19 +60,6 @@ contract Organisation {
     taskDB.contributeShares(taskId, shares);
 		shareLedger.transfer(this, shares);
 	}
-
-  /// @notice this function is used to generate Organisation shares
-  /// @param _amount The amount of shares to be generated
-  function generateOrganisationShares(uint256 _amount)
-  {
-    shareLedger.generateShares(_amount);
-  }
-
-  function getParent()
-  constant returns(address)
-  {
-    return parentResolver.ParentAddress();
-  }
 
   /// @notice this function adds a task to the task DB.
   /// @param _name the task name
@@ -115,46 +92,9 @@ contract Organisation {
     taskDB.updateTask(_id, _name, _summary);
   }
 
-  /// @notice set the Organisation shares symbol
-  /// @param symbol_ the symbol of the Organisation shares
-  function setSharesSymbol(bytes4 symbol_)
-  {
-    shareLedger.setSharesSymbol(symbol_);
-  }
-
-  /// @notice set the Organisation shares title
-  /// @param title_ the title of the Organisation shares
-  function setSharesTitle(bytes32 title_)
-  {
-    shareLedger.setSharesTitle(title_);
-  }
-
 	function getUserInfo(address userAddress)
   constant returns (bool admin)
   {
 		return users[userAddress].admin;
 	}
-
-  //Mark a task as completed, pay a user, pay root Organisation fee
-  function completeAndPayTask(uint256 taskId, address paymentAddress)
-  {
-
-    var isTaskAccepted = taskDB.isTaskAccepted(taskId);
-    if (isTaskAccepted || users[msg.sender].admin == false)
-			throw;
-
-    var (taskEth, taskShares) = taskDB.getTaskBalance(taskId);
-    taskDB.acceptTask(taskId);
-
-		if (taskShares > 0)
-		{
-			// Check if there are enough shares to pay up
-			if (shareLedger.totalSupply() < taskShares)
-				throw;
-
-			shareLedger.transfer(paymentAddress, taskShares);
-		}
-
-		TaskCompletedAndPaid(this, paymentAddress, taskEth, taskShares);
-  }
 }

@@ -3,9 +3,7 @@
     // Names of contracts that should be deployed to the network.
     "TokenLedger",
     "Parent",
-    "ParentResolver",
     "TaskDB",
-    "OrganisationFactory",
     "Organisation"
   ],
   "rpc": {
