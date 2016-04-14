@@ -8,7 +8,7 @@
     abi: [{"constant":true,"inputs":[],"name":"ParentAddress","outputs":[{"name":"","type":"address"}],"type":"function"},{"constant":false,"inputs":[{"name":"_ParentAddress","type":"address"}],"name":"registerParent","outputs":[],"type":"function"},{"inputs":[],"type":"constructor"}],
     binary: "606060405260798060106000396000f36060604052361560275760e060020a60003504635beb8a318114602d578063baa0ad1114604b575b606d6002565b606f60005473ffffffffffffffffffffffffffffffffffffffff1681565b6000805473ffffffffffffffffffffffffffffffffffffffff19166004351790555b005b6060908152602090f3",
     unlinked_binary: "606060405260798060106000396000f36060604052361560275760e060020a60003504635beb8a318114602d578063baa0ad1114604b575b606d6002565b606f60005473ffffffffffffffffffffffffffffffffffffffff1681565b6000805473ffffffffffffffffffffffffffffffffffffffff19166004351790555b005b6060908152602090f3",
-    address: "0x1b97435cebf6063dc27ad00ad730b5a57e932071",
+    address: "0x21c6c96152f18119bd393897b1e393c57bc354e8",
     generated_with: "2.0.6",
     contract_name: "ParentResolver"
   };
