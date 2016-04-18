@@ -1,7 +1,8 @@
 /*
   IMPLEMENTING TOKEN STANDARD BASED ON: https://github.com/ConsenSys/Tokens
 */
-contract TokenLedger {
+import "Ownable.sol";
+contract TokenLedger is Ownable{
 
   function TokenLedger()
   {

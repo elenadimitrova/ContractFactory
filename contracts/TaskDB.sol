@@ -1,4 +1,6 @@
-contract TaskDB {
+
+import "Ownable.sol";
+contract TaskDB is Ownable{
 
   event ReceivedShares(uint256 indexed taskId, uint256 indexed amount, uint256 indexed when);
   event ReceivedEther(uint256 indexed taskId, uint256 indexed amount, uint256 indexed when);

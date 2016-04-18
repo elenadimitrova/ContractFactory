@@ -1,5 +1,4 @@
 import "TaskDB.sol";
-import "ParentResolver.sol";
 import "TokenLedger.sol";
 
 contract Organisation {
@@ -17,7 +16,7 @@ contract Organisation {
 		bool admin;  // if true, that person is an admin
 	}
 
-  ParentResolver public parentResolver;
+  address public rootColony;
   TokenLedger public shareLedger;
   TaskDB public taskDB;
 
@@ -26,22 +25,14 @@ contract Organisation {
  	mapping(address => User) public users;
 
   function Organisation(
-    address ParentResolverAddress_,
+    address rootColonyAddress_,
     address _shareLedgerAddress,
     address _tasksDBAddress)
   {
     users[tx.origin].admin = true;
-    parentResolver = ParentResolver(ParentResolverAddress_);
+    rootColony = rootColonyAddress_;
     shareLedger = TokenLedger(_shareLedgerAddress);
     taskDB = TaskDB(_tasksDBAddress);
-  }
-
-  /// @notice registers a new ParentResolver contract.
-  /// Used to keep the reference of the Parent.
-  /// @param ParentResolverAddress_ the ParentResolver address
-  function registerParentResolver(address ParentResolverAddress_)
-  {
-    parentResolver = ParentResolver(ParentResolverAddress_);
   }
 
   /// @notice registers a new ITaskDB contract
@@ -76,12 +67,6 @@ contract Organisation {
   function generateOrganisationShares(uint256 _amount)
   {
     shareLedger.generateShares(_amount);
-  }
-
-  function getParent()
-  constant returns(address)
-  {
-    return parentResolver.ParentAddress();
   }
 
   /// @notice this function adds a task to the task DB.
@@ -135,7 +120,6 @@ contract Organisation {
 		return users[userAddress].admin;
 	}
 
-  //Mark a task as completed, pay a user, pay root Organisation fee
   function completeAndPayTask(uint256 taskId, address paymentAddress)
   {
 
