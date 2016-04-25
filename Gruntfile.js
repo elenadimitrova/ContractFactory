@@ -19,7 +19,7 @@ module.exports = function (grunt) {
   });
 
   grunt.loadNpmTasks('grunt-shell-spawn');
-  grunt.registerTask('test',[
+  grunt.registerTask('deploy',[
     'shell:compile',
     'shell:deploy'
   ]);
