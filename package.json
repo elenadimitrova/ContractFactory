@@ -25,6 +25,8 @@
     "ether-pudding": "^2.0.7",
     "ethereumjs-util": "^4.3.0",
     "glob": "^7.0.3",
+    "grunt": "^1.0.1",
+    "grunt-shell-spawn": "^0.3.10",
     "lodash": "^4.11.1",
     "request": "^2.72.0",
     "solc": "^0.3.1-1",

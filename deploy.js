@@ -1,6 +1,6 @@
 'use strict';
 
-const deployConfig = require('./deploy.json');
+const config = require('./config.json');
 const _ = require('lodash');
 const path = require('path');
 const fs = require('fs');
@@ -20,12 +20,13 @@ _.reduce(files, function(memo, filename){
   return memo;
 }, compiledContracts);
 
-_.each(deployConfig.deploy, function(contractName){
+_.each(config.deploy, function(contractName){
   let compiledContract = compiledContracts[contractName];
   let contract = web3.eth.contract(JSON.parse(compiledContract.abi));
   let contractInstance = contract.new({
     from: _ACCOUNTS_[0],
-    gas: 4e6,
+    gas: 2e6,
+    gasPrice: 20e9,
     data: compiledContract.binary
   }, function(error, args){
 

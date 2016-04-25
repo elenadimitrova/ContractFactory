@@ -3,6 +3,7 @@
 const _ = require('lodash');
 const solc = require('solc');
 const path = require('path');
+const chalk = require('chalk');
 const fs = require('fs');
 
 const _COMPILED_CONTRACTS_DIR_ = './compiled-contracts/';
@@ -15,17 +16,26 @@ _.reduce(files, function(memo, filename){
   return memo;
 }, contracts);
 
-var compiledContracts = solc.compile({sources: contracts}, 1);
-var compiledContractsKeys = _.keys(compiledContracts.contracts);
+console.log(chalk.bold.green('Compiling contracts...'));
+var result = solc.compile({sources: contracts}, 1);
+if(result.errors)
+{
+  _.each(result.errors, function(error){
+    console.error(error);
+  });
+  process.exit(1);
+}
 
+var compiledContractsKeys = _.keys(result.contracts);
 _.map(compiledContractsKeys, function(compiledContractName){
 
+  console.log(`Compiled ${compiledContractName}`);
   let filepath = path.join(_COMPILED_CONTRACTS_DIR_, `${compiledContractName}.sol.js`);
   if(fs.existsSync(filepath)){
     fs.unlinkSync(filepath);
   }
 
-  let contractCode = compiledContracts.contracts[compiledContractName];
+  let contractCode = result.contracts[compiledContractName];
   fs.writeFileSync(filepath, JSON.stringify({
     abi: contractCode.interface,
     binary: contractCode.bytecode
