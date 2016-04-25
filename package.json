@@ -1,0 +1,33 @@
+{
+  "name": "contract-factory",
+  "version": "1.0.0",
+  "description": "",
+  "main": "deploy.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thiagodelgado111/ContractFactory.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thiagodelgado111/ContractFactory/issues"
+  },
+  "homepage": "https://github.com/thiagodelgado111/ContractFactory#readme",
+  "dependencies": {
+    "bluebird": "^3.3.5",
+    "chalk": "^1.1.3",
+    "ether-pudding": "^2.0.7",
+    "ethereumjs-util": "^4.3.0",
+    "glob": "^7.0.3",
+    "lodash": "^4.11.1",
+    "request": "^2.72.0",
+    "solc": "^0.3.1-1",
+    "web3": "^0.15.3"
+  }
+}
