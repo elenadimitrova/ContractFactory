@@ -1,0 +1,18 @@
+{
+  "deploy": [
+    // Names of contracts that should be deployed to the network.
+    "TokenLedger",
+    "Parent",
+    "TaskDB",
+    "Organisation",
+    "Ownable"
+  ],
+  "rpc": {
+    // Default RPC configuration.
+    "host": "localhost",
+    "port": 8545
+  },
+  "mocha":{
+  	"reporter": "spec"
+   }
+}
