@@ -1,4 +1,5 @@
 import "Organisation.sol";
+import "OrganisationUpdated.sol";
 
 contract Parent {
 
@@ -23,7 +24,17 @@ contract Parent {
   {
     address organisationAddress = organisations[key_];
     var organisation = Organisation(organisationAddress);
-    Organisation organisationNew = new Organisation();
+    OrganisationUpdated organisationNew = new OrganisationUpdated();
+
+    for (var i = 0; i < organisation.proposalsCount(); i++)
+    {
+      var (proposalName, proposalEther) = organisation.getProposal(i);
+      organisationNew.addProposal(proposalName);
+      organisationNew.setProposalFund(i, proposalEther);
+    }
+
+    organisation.kill(organisationNew);
+
     organisations[key_] = organisationNew;
     OrganisationUpgraded(organisationNew, now);
   }

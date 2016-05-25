@@ -1,4 +1,4 @@
-contract Organisation
+contract OrganisationUpdated
 {
   event ProposalAdded(uint256 id, uint256 when);
   event ProposalUpdated(uint256 id, uint256 when);
@@ -11,7 +11,7 @@ contract Organisation
 
   Proposal[] proposals;
 
-  function Organisation() {
+  function OrganisationUpdated() {
   }
 
   function addProposal(bytes32 _name)
@@ -55,5 +55,10 @@ contract Organisation
   function kill(address upgradedOrganisation_)
   {
       selfdestruct(upgradedOrganisation_);
+  }
+
+  function coolLogic() constant returns (bool)
+  {
+    return true;
   }
 }
