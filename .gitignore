@@ -1,1 +1,10 @@
 node_modules
+environments/*
+contracts/TokenLedger.sol
+contracts/ProposalsLibrary.sol
+contracts/ITokenLedger.sol
+contracts/EternalStorage.sol
+test/gasCosts.js
+test/gasCostsFinal.js
+test-helper.js
+compiled-contracts

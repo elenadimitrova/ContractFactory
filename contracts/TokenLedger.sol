@@ -42,14 +42,14 @@ contract TokenLedger {
 
   /// @notice set the TokenLedger symbol
   /// @param _symbol the symbol of the Organisation Share
-  function setSharesSymbol(bytes4 _symbol)
+  function setTokensSymbol(bytes4 _symbol)
   {
     symbol = _symbol;
   }
 
   /// @notice set the TokenLedger title
   /// @param _title the title of the Organisation Share
-  function setSharesTitle(bytes32 _title)
+  function setTokensTitle(bytes32 _title)
   {
     title = _title;
   }
@@ -113,7 +113,7 @@ contract TokenLedger {
   /// @notice this function is used to increase the amount of shares available limited by `total_supply`
   /// and assign it to the contract owner.
   /// @param _amount The amount to be increased in the upper bound total_supply
-  function generateShares(uint256 _amount)
+  function generateTokens(uint256 _amount)
   {
       if(_amount == 0) throw;
       if (total_supply + _amount < _amount) throw;
