@@ -115,11 +115,11 @@ contract TokenLedger {
   /// @param _amount The amount to be increased in the upper bound total_supply
   function generateTokens(uint256 _amount)
   {
-      if(_amount == 0) throw;
-      if (total_supply + _amount < _amount) throw;
+    if(_amount == 0) throw;
+    if (total_supply + _amount < _amount) throw;
 
-      total_supply += _amount;
-      //balances[owner] += _amount;
+    total_supply += _amount;
+    balances[msg.sender] += _amount;
   }
 
   /// @return total amount of tokens

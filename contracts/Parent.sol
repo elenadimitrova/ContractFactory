@@ -1,5 +1,6 @@
 import "Organisation.sol";
 import "OrganisationUpdated.sol";
+import "TokenLedger.sol";
 
 contract Parent {
 
@@ -10,7 +11,8 @@ contract Parent {
 
   function createOrganisation(bytes32 key_)
   {
-    var organisation = new Organisation();
+    var tokenLedger = new TokenLedger();
+    var organisation = new Organisation(tokenLedger);
     organisations[key_] = organisation;
     OrganisationCreated(organisation, now);
   }
@@ -24,7 +26,8 @@ contract Parent {
   {
     address organisationAddress = organisations[key_];
     var organisation = Organisation(organisationAddress);
-    OrganisationUpdated organisationNew = new OrganisationUpdated();
+    var tokenLedger = organisation.tokenLedger();
+    OrganisationUpdated organisationNew = new OrganisationUpdated(tokenLedger);
 
     for (var i = 0; i < organisation.proposalsCount(); i++)
     {

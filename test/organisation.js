@@ -12,7 +12,7 @@ contract('Organisation', function (accounts) {
   describe('when created', function () {
     it('should allow management of proposals', function (done) {
       parent = Parent.deployed();
-      console.log('Parent contract deployed at: ', parent.address);
+      //console.log('Parent contract deployed at: ', parent.address);
 
       parent.createOrganisation.estimateGas('Antz', {})
       .then(function(_cost){
@@ -23,7 +23,7 @@ contract('Organisation', function (accounts) {
         return parent.getOrganisation('Antz');
       })
       .then(function(_organisation){
-        console.log('Organisation created at address: ', _organisation);
+        //console.log('Organisation created at address: ', _organisation);
         organisation = Organisation.at(_organisation);
         return organisation.addProposal.estimateGas("Bring nectar", {});
       })
@@ -31,8 +31,7 @@ contract('Organisation', function (accounts) {
         console.log('addProposal gas cost estimate : ', _cost);
         return organisation.addProposal("Bring pollen");
       })
-      .then(function(_cost){
-        console.log('addProposal gas cost estimate : ', _cost);
+      .then(function(){
         return organisation.addProposal("Bring nectar");
       })
       .then(function(){
@@ -55,7 +54,9 @@ contract('Organisation', function (accounts) {
       .then(function(value){
         assert.equal(value[0], '0x4272696e6720616361636961206e656374617200000000000000000000000000', 'Proposal name is incorrect');
         assert.equal(value[1].toNumber(), 100, 'Proposal ether value is incorrect');
-
+        return organisation.generateTokens(1000);
+      })
+      .then(function(){
         // Begin upgrade testing
         return parent.upgradeOrganisation.estimateGas('Antz', {});
       })
@@ -68,7 +69,7 @@ contract('Organisation', function (accounts) {
         return parent.getOrganisation('Antz');
       })
       .then(function(_organisation){
-        console.log('OrganisationUpdated created at address: ', _organisation);
+        //console.log('OrganisationUpdated created at address: ', _organisation);
         organisationUpgraded = OrganisationUpdated.at(_organisation);
         return organisationUpgraded.coolLogic.call();
       })
@@ -88,6 +89,10 @@ contract('Organisation', function (accounts) {
       })
       .then(function(){
         assert.equal(orgEtherBalanceOriginal.toNumber(), orgEtherBalanceUpgraded.toNumber(), 'The ether balance is not the same after upgrade');
+        return organisationUpgraded.getBalance(organisationUpgraded.address);
+      })
+      .then(function(orgBalance){
+        assert.equal(1000, orgBalance.toNumber(), 'TokenLedger is not correctly upgraded with the Colony');
       })
       .then(done)
       .catch(done);

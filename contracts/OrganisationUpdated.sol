@@ -1,3 +1,5 @@
+import "TokenLedger.sol";
+
 contract OrganisationUpdated
 {
   event ProposalAdded(uint256 id, uint256 when);
@@ -10,8 +12,10 @@ contract OrganisationUpdated
   }
 
   Proposal[] proposals;
+  TokenLedger tokenLedger;
 
-  function OrganisationUpdated() {
+  function OrganisationUpdated(address _tokenLedger) {
+    tokenLedger = TokenLedger(_tokenLedger);
   }
 
   function addProposal(bytes32 _name)
@@ -55,6 +59,16 @@ contract OrganisationUpdated
   function kill(address upgradedOrganisation_)
   {
       selfdestruct(upgradedOrganisation_);
+  }
+
+  function generateTokens(uint256 _amount)
+  {
+    tokenLedger.generateTokens(_amount);
+  }
+
+  function getBalance(address _account) constant returns (uint256)
+  {
+    return tokenLedger.balanceOf(_account);
   }
 
   function coolLogic() constant returns (bool)

@@ -1,3 +1,5 @@
+import "TokenLedger.sol";
+
 contract Organisation
 {
   event ProposalAdded(uint256 id, uint256 when);
@@ -10,8 +12,10 @@ contract Organisation
   }
 
   Proposal[] proposals;
+  TokenLedger public tokenLedger;
 
-  function Organisation() {
+  function Organisation(address _tokenLedger) {
+    tokenLedger = TokenLedger(_tokenLedger);
   }
 
   function addProposal(bytes32 _name)
@@ -52,8 +56,20 @@ contract Organisation
     proposals[_id].eth = _eth;
   }
 
+  function generateTokens(uint256 _amount)
+  {
+    tokenLedger.generateTokens(_amount);
+  }
+
+  function getBalance(address _account) constant returns (uint256)
+  {
+    return tokenLedger.balanceOf(_account);
+  }
+
   function kill(address upgradedOrganisation_)
   {
-      selfdestruct(upgradedOrganisation_);
+    var tokenBalance = tokenLedger.balanceOf(this);
+    tokenLedger.transfer(upgradedOrganisation_, tokenBalance);
+    selfdestruct(upgradedOrganisation_);
   }
 }
