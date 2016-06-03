@@ -1,6 +1,7 @@
 import "Organisation.sol";
 import "OrganisationUpdated.sol";
 import "TokenLedger.sol";
+import "EternalStorage.sol";
 
 contract Parent {
 
@@ -12,7 +13,10 @@ contract Parent {
   function createOrganisation(bytes32 key_)
   {
     var tokenLedger = new TokenLedger();
-    var organisation = new Organisation(tokenLedger);
+    var eternalStorage = new EternalStorage();
+
+    var organisation = new Organisation(tokenLedger, eternalStorage);
+
     organisations[key_] = organisation;
     OrganisationCreated(organisation, now);
   }
@@ -27,14 +31,9 @@ contract Parent {
     address organisationAddress = organisations[key_];
     var organisation = Organisation(organisationAddress);
     var tokenLedger = organisation.tokenLedger();
-    OrganisationUpdated organisationNew = new OrganisationUpdated(tokenLedger);
+    var eternalStorage = organisation.eternalStorage();
 
-    for (var i = 0; i < organisation.proposalsCount(); i++)
-    {
-      var (proposalName, proposalEther) = organisation.getProposal(i);
-      organisationNew.addProposal(proposalName);
-      organisationNew.setProposalFund(i, proposalEther);
-    }
+    OrganisationUpdated organisationNew = new OrganisationUpdated(tokenLedger, eternalStorage);
 
     organisation.kill(organisationNew);
 
