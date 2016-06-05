@@ -1,56 +1,45 @@
 import "TokenLedger.sol";
-import "EternalStorage.sol";
+import "ProposalsLibrary.sol";
 
 contract Organisation
 {
-  event ProposalAdded(uint256 id, uint256 when);
-  event ProposalUpdated(uint256 id, uint256 when);
-
   TokenLedger public tokenLedger;
-  EternalStorage public eternalStorage;
+  using ProposalsLibrary for address;
+  address public eternalStorage;
 
   function Organisation(address _tokenLedger, address _eternalStorage) {
     tokenLedger = TokenLedger(_tokenLedger);
-    eternalStorage = EternalStorage(_eternalStorage);
+    eternalStorage = _eternalStorage;
   }
 
   function addProposal(bytes32 _name)
   {
-    var newId = proposalsCount();
-    eternalStorage.setBytes32Value(sha3("proposal_name", newId), _name);
-    eternalStorage.setUIntValue(sha3("proposal_eth", newId), 0);
-    eternalStorage.setUIntValue(sha3("ProposalCount"), newId+1);
-
-    ProposalAdded(newId, now);
+    eternalStorage.addProposal(_name);
   }
 
   function proposalsCount() constant returns (uint256)
   {
-    return eternalStorage.getUIntValue(sha3("ProposalCount"));
+    return eternalStorage.getProposalCount();
   }
 
   function getProposal(uint256 _id) constant returns (bytes32 _name, uint256 _eth)
   {
-    var proposalName = eternalStorage.getBytes32Value(sha3("proposal_name", _id));
-    var proposalEth = eternalStorage.getUIntValue(sha3("proposal_eth", _id));
-
-    return (proposalName, proposalEth);
+    return eternalStorage.getProposal(_id);
   }
 
   function updateProposal(uint256 _id, bytes32 _name)
   {
-    eternalStorage.setBytes32Value(sha3("proposal_name", _id), _name);
-    ProposalUpdated(_id, now);
+    eternalStorage.updateProposal(_id, _name);
   }
 
   function fundProposal(uint256 _id)
   {
-    eternalStorage.setUIntValue(sha3("proposal_eth", _id), msg.value);
+    eternalStorage.fundProposal(_id);
 	}
 
   function setProposalFund(uint256 _id, uint256 _eth)
   {
-    eternalStorage.setUIntValue(sha3("proposal_eth", _id), _eth);
+    eternalStorage.setProposalFund(_id, _eth);
   }
 
   function generateTokens(uint256 _amount)

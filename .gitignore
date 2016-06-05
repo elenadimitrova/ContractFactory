@@ -1,8 +1,8 @@
 node_modules
 environments/*
-contracts/ProposalsLibrary.sol
 contracts/ITokenLedger.sol
 test/gasCosts.js
 test/gasCostsFinal.js
 test-helper.js
 compiled-contracts
+environments/test/contracts
