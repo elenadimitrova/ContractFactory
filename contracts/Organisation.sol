@@ -1,14 +1,14 @@
-import "TokenLedger.sol";
+import "ITokenLedger.sol";
 import "ProposalsLibrary.sol";
 
 contract Organisation
 {
-  TokenLedger public tokenLedger;
+  ITokenLedger public tokenLedger;
   using ProposalsLibrary for address;
   address public eternalStorage;
 
   function Organisation(address _tokenLedger, address _eternalStorage) {
-    tokenLedger = TokenLedger(_tokenLedger);
+    tokenLedger = ITokenLedger(_tokenLedger);
     eternalStorage = _eternalStorage;
   }
 
