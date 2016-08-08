@@ -52,6 +52,11 @@ contract Organisation
     return tokenLedger.balanceOf(_account);
   }
 
+  function setTokenLedgerAddress(address _tokenLedger)
+  {
+    tokenLedger = ITokenLedger(_tokenLedger);
+  }
+
   function kill(address upgradedOrganisation_)
   {
     var tokenBalance = tokenLedger.balanceOf(this);
