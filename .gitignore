@@ -4,3 +4,4 @@ test/gasCosts.js
 test/gasCostsFinal.js
 test-helper.js
 compiled-contracts
+environments
