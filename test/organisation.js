@@ -5,28 +5,36 @@
 contract('Organisation', function (accounts) {
   var parent;
   var organisation;
+  var eternalStorage;
   var organisationUpgraded;
   var orgEtherBalanceOriginal;
   var orgEtherBalanceUpgraded;
 
-  describe('when created', function () {
-    it('should allow management of proposals', function (done) {
-      parent = Parent.deployed();
-      //console.log('Parent contract deployed at: ', parent.address);
+  beforeEach(function(done)
+  {
+    parent = Parent.deployed();
+    console.log('Parent contract deployed at: ', parent.address);
 
-      parent.createOrganisation.estimateGas('Antz', {})
-      .then(function(_cost){
-        console.log("createOrganisation gas cost estimate: ", _cost);
-        return parent.createOrganisation('Antz', {from: accounts[0]});
-      })
-      .then(function(){
-        return parent.getOrganisation('Antz');
-      })
-      .then(function(_organisation){
-        //console.log('Organisation created at address: ', _organisation);
-        organisation = Organisation.at(_organisation);
-        return organisation.addProposal.estimateGas("Bring nectar", {});
-      })
+    parent.createOrganisation.estimateGas('Antz', {})
+    .then(function(_cost){
+      console.log("createOrganisation gas cost estimate: ", _cost);
+      return parent.createOrganisation('Antz', {from: accounts[0]});
+    })
+    .then(function(){
+      return parent.getOrganisation('Antz');
+    })
+    .then(function(_organisation){
+      console.log('Organisation created at address: ', _organisation);
+      organisation = Organisation.at(_organisation);
+      return;
+    })
+    .then(done)
+    .catch(done);
+  });
+
+  describe('when created', function () {
+    it('should allow upgrades of an organisation', function (done) {
+      organisation.addProposal.estimateGas("Bring nectar", {})
       .then(function(_cost){
         console.log('addProposal gas cost estimate : ', _cost);
         return organisation.addProposal("Bring pollen");
@@ -97,5 +105,20 @@ contract('Organisation', function (accounts) {
       .then(done)
       .catch(done);
     });
+
+    it('should implement contract ownership', function(done) {
+      organisation.eternalStorage()
+      .then(function(storageAddress){
+        console.log('EternalStorage is at ', storageAddress);
+        eternalStorage = EternalStorage.at(storageAddress);
+        return eternalStorage.owner.call();
+      })
+      .then(function(ownerAddress){
+        console.log('EternalStorage owner is ', ownerAddress);
+        return;
+      })
+      .then(done)
+      .catch(done);
+    })
   });
 });

@@ -16,6 +16,7 @@ contract Parent {
     var eternalStorage = new EternalStorage();
 
     var organisation = new Organisation(tokenLedger, eternalStorage);
+    eternalStorage.changeOwner(organisation);
 
     organisations[key_] = organisation;
     OrganisationCreated(organisation, now);

@@ -1,4 +1,6 @@
-contract EternalStorage {
+import "Ownable.sol";
+
+contract EternalStorage is Ownable {
 
     function EternalStorage(){
 
@@ -15,11 +17,13 @@ contract EternalStorage {
     }
 
     function setUIntValue(bytes32 record, uint value)
+    onlyOwner
     {
         UIntStorage[record] = value;
     }
 
     function deleteUIntValue(bytes32 record)
+    onlyOwner
     {
       delete UIntStorage[record];
     }
@@ -35,11 +39,13 @@ contract EternalStorage {
     }
 
     function setStringValue(bytes32 record, string value)
+    onlyOwner
     {
         StringStorage[record] = value;
     }
 
     function deleteStringValue(bytes32 record)
+    onlyOwner
     {
       delete StringStorage[record];
     }
@@ -55,11 +61,13 @@ contract EternalStorage {
     }
 
     function setAddressValue(bytes32 record, address value)
+    onlyOwner
     {
         AddressStorage[record] = value;
     }
 
     function deleteAddressValue(bytes32 record)
+    onlyOwner
     {
       delete AddressStorage[record];
     }
@@ -75,11 +83,13 @@ contract EternalStorage {
     }
 
     function setBytesValue(bytes32 record, bytes value)
+    onlyOwner
     {
         BytesStorage[record] = value;
     }
 
     function deleteBytesValue(bytes32 record)
+    onlyOwner
     {
       delete BytesStorage[record];
     }
@@ -95,11 +105,13 @@ contract EternalStorage {
     }
 
     function setBytes32Value(bytes32 record, bytes32 value)
+    onlyOwner
     {
         Bytes32Storage[record] = value;
     }
 
     function deleteBytes32Value(bytes32 record)
+    onlyOwner
     {
       delete Bytes32Storage[record];
     }
@@ -115,11 +127,13 @@ contract EternalStorage {
     }
 
     function setBooleanValue(bytes32 record, bool value)
+    onlyOwner
     {
         BooleanStorage[record] = value;
     }
 
     function deleteBooleanValue(bytes32 record)
+    onlyOwner
     {
       delete BooleanStorage[record];
     }
@@ -134,11 +148,13 @@ contract EternalStorage {
     }
 
     function setIntValue(bytes32 record, int value)
+    onlyOwner
     {
         IntStorage[record] = value;
     }
 
     function deleteIntValue(bytes32 record)
+    onlyOwner
     {
       delete IntStorage[record];
     }
