@@ -1,10 +1,12 @@
 import "ITokenLedger.sol";
 import "ProposalsLibrary.sol";
+import "SecurityLibrary.sol";
 
 contract Organisation
 {
   ITokenLedger public tokenLedger;
   using ProposalsLibrary for address;
+  using SecurityLibrary for address;
   address public eternalStorage;
 
   function Organisation(address _tokenLedger, address _eternalStorage) {
@@ -12,7 +14,13 @@ contract Organisation
     eternalStorage = _eternalStorage;
   }
 
+  modifier onlyAdmins {
+    if (!eternalStorage.isUserAdmin(msg.sender)) throw;
+    _
+  }
+
   function addProposal(bytes32 _name)
+  onlyAdmins
   {
     eternalStorage.addProposal(_name);
   }

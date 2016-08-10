@@ -2,11 +2,14 @@ import "Organisation.sol";
 import "OrganisationUpdated.sol";
 import "TokenLedger.sol";
 import "EternalStorage.sol";
+import "SecurityLibrary.sol";
 
 contract Parent {
 
   event OrganisationCreated(address organisation, uint now);
   event OrganisationUpgraded(address organisation, uint now);
+
+  using SecurityLibrary for EternalStorage;
 
   mapping(bytes32 => address) public organisations;
 
@@ -14,8 +17,11 @@ contract Parent {
   {
     var tokenLedger = new TokenLedger();
     var eternalStorage = new EternalStorage();
+    // Set the calling user as the first colony admin
+    eternalStorage.addAdmin(msg.sender);
 
     var organisation = new Organisation(tokenLedger, eternalStorage);
+    // Set the organisation as the storage owner
     eternalStorage.changeOwner(organisation);
 
     organisations[key_] = organisation;

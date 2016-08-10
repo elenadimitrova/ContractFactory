@@ -15,11 +15,11 @@ contract('Organisation', function (accounts) {
     parent = Parent.deployed();
     console.log('Parent contract deployed at: ', parent.address);
 
-    parent.createOrganisation.estimateGas('Antz', {})
-    .then(function(_cost){
-      console.log("createOrganisation gas cost estimate: ", _cost);
-      return parent.createOrganisation('Antz', {from: accounts[0]});
-    })
+  //  parent.createOrganisation.estimateGas('Antz', {from: accounts[0]})
+  //  .then(function(_cost){
+  //    console.log("createOrganisation gas cost estimate: ", _cost);
+
+    parent.createOrganisation('Antz', {from: accounts[0]})
     .then(function(){
       return parent.getOrganisation('Antz');
     })
