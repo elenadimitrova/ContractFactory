@@ -6,7 +6,8 @@
     "OrganisationUpdated"
   ],
   "libraries": [
-
+    "ProposalsLibrary",
+    "SecurityLibrary"
   ],
   "rpc": {
     // Default RPC configuration.

@@ -1,8 +1,9 @@
 import "ITokenLedger.sol";
 import "ProposalsLibrary.sol";
 import "SecurityLibrary.sol";
+import "DataVerifiable.sol";
 
-contract Organisation
+contract Organisation is DataVerifiable
 {
   ITokenLedger public tokenLedger;
   using ProposalsLibrary for address;
@@ -21,6 +22,8 @@ contract Organisation
 
   function addProposal(bytes32 _name)
   onlyAdmins
+  refundEtherSentByAccident
+  throwIfIsEmptyBytes32(_name)
   {
     eternalStorage.addProposal(_name);
   }
