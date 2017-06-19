@@ -3,5 +3,5 @@ node_modules
 test/gasCosts.js
 test/gasCostsFinal.js
 test-helper.js
-compiled-contracts
+build
 environments

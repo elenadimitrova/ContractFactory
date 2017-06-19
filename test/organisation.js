@@ -2,6 +2,11 @@
 // These globals are added by Truffle:
 /* globals contract, Organisation, OrganisationNewVersion, Parent, web3, assert */
 
+const Parent = artifacts.require('../contracts/Parent.sol');
+const Organisation = artifacts.require('../contracts/Organisation.sol');
+const OrganisationUpdated = artifacts.require('../contracts/OrganisationUpdated.sol');
+const EternalStorage = artifacts.require('../contracts/EternalStorage.sol');
+
 contract('Organisation', function (accounts) {
   var parent;
   var organisation;
@@ -12,14 +17,16 @@ contract('Organisation', function (accounts) {
 
   beforeEach(function(done)
   {
-    parent = Parent.deployed();
-    console.log('Parent contract deployed at: ', parent.address);
+    Parent.deployed().then(function(instance) {
+      parent = instance
+      console.log('Parent contract deployed at: ', parent.address);
 
   //  parent.createOrganisation.estimateGas('Antz', {from: accounts[0]})
   //  .then(function(_cost){
   //    console.log("createOrganisation gas cost estimate: ", _cost);
 
-    parent.createOrganisation('Antz', {from: accounts[0]})
+      return parent.createOrganisation('Antz', {from: accounts[0]})
+    })
     .then(function(){
       return parent.getOrganisation('Antz');
     })
@@ -50,7 +57,7 @@ contract('Organisation', function (accounts) {
         return organisation.updateProposal(1, "Bring acacia nectar");
       })
       .then(function(){
-        return organisation.fundProposal.estimateGas(1, {from: accounts[0], value: 100});
+        return organisation.fundProposal.estimateGas(1);
       })
       .then(function(_cost){
         console.log('fundProposal gas cost estimate: ', _cost);

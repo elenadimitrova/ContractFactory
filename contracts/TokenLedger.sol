@@ -1,3 +1,5 @@
+pragma solidity ^0.4.8;
+
 /*
   IMPLEMENTING TOKEN STANDARD BASED ON: https://github.com/ConsenSys/Tokens
 */
@@ -26,7 +28,7 @@ contract TokenLedger {
     if(_value == 0) throw;
     if(balances[_from] < _value) throw;
     if(balances[_from] + _value < balances[_from]) throw;
-    _
+    _;
   }
 
   /// @notice verifies if the address msg.sender has enough balance approved from `_from` address
@@ -37,7 +39,7 @@ contract TokenLedger {
     if(_value == 0) throw;
     if(allowed[_from][msg.sender] < _value) throw;
     if(allowed[_from][msg.sender] + _value < allowed[_from][msg.sender]) throw;
-    _
+    _;
   }
 
   /// @notice set the TokenLedger symbol

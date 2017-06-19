@@ -1,4 +1,6 @@
-import "EternalStorage.sol";
+pragma solidity ^0.4.8;
+
+import "./EternalStorage.sol";
 
 library SecurityLibrary
 {
