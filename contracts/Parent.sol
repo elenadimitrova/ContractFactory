@@ -1,33 +1,31 @@
 pragma solidity ^0.4.8;
 
-import "./Organisation.sol";
-import "./OrganisationUpdated.sol";
+import "./OrganisationInterface.sol";
 import "./TokenLedger.sol";
 import "./EternalStorage.sol";
 import "./SecurityLibrary.sol";
 
 contract Parent {
 
-  event OrganisationCreated(address organisation, uint now);
   event OrganisationUpgraded(address organisation, uint now);
 
   using SecurityLibrary for EternalStorage;
 
   mapping(bytes32 => address) public organisations;
 
-  function createOrganisation(bytes32 key_)
+  function registerOrganisation(bytes32 key_, address orgAddress)
   {
+
     var tokenLedger = new TokenLedger();
     var eternalStorage = new EternalStorage();
     // Set the calling user as the first colony admin
     eternalStorage.addAdmin(msg.sender);
 
-    var organisation = new Organisation(tokenLedger, eternalStorage);
+    OrganisationInterface(orgAddress).setDataStore(tokenLedger, eternalStorage);
     // Set the organisation as the storage owner
-    eternalStorage.changeOwner(organisation);
+    eternalStorage.changeOwner(orgAddress);
 
-    organisations[key_] = organisation;
-    OrganisationCreated(organisation, now);
+    organisations[key_] = orgAddress;
   }
 
   function getOrganisation(bytes32 key_) constant returns (address)
@@ -35,18 +33,18 @@ contract Parent {
     return organisations[key_];
   }
 
-  function upgradeOrganisation(bytes32 key_)
+  function upgradeOrganisation(bytes32 key_, address newOrgAddress)
   {
     address organisationAddress = organisations[key_];
-    var organisation = Organisation(organisationAddress);
+    var organisation = OrganisationInterface(organisationAddress);
     var tokenLedger = organisation.tokenLedger();
     var eternalStorage = organisation.eternalStorage();
 
-    OrganisationUpdated organisationNew = new OrganisationUpdated(tokenLedger, eternalStorage);
+    OrganisationInterface(newOrgAddress).setDataStore(tokenLedger, eternalStorage);
 
-    organisation.kill(organisationNew);
+    organisation.kill(newOrgAddress);
 
-    organisations[key_] = organisationNew;
-    OrganisationUpgraded(organisationNew, now);
+    organisations[key_] = newOrgAddress;
+    OrganisationUpgraded(newOrgAddress, now);
   }
 }
