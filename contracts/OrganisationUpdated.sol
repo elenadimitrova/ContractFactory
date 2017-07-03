@@ -1,5 +1,7 @@
-import "TokenLedger.sol";
-import "EternalStorage.sol";
+pragma solidity ^0.4.8;
+
+import "./TokenLedger.sol";
+import "./EternalStorage.sol";
 
 contract OrganisationUpdated
 {
@@ -43,10 +45,10 @@ contract OrganisationUpdated
     ProposalUpdated(_id, now);
   }
 
-  function fundProposal(uint256 _id)
+  function fundProposal(uint256 _id) payable
   {
     eternalStorage.setUIntValue(sha3("proposal_eth", _id), msg.value);
-	}
+  }
 
   function setProposalFund(uint256 _id, uint256 _eth)
   {

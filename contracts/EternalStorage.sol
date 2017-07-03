@@ -1,4 +1,6 @@
-import "Ownable.sol";
+pragma solidity ^0.4.8;
+
+import "./Ownable.sol";
 
 contract EternalStorage is Ownable {
 

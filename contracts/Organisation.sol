@@ -1,7 +1,9 @@
-import "ITokenLedger.sol";
-import "ProposalsLibrary.sol";
-import "SecurityLibrary.sol";
-import "DataVerifiable.sol";
+pragma solidity ^0.4.8;
+
+import "./ITokenLedger.sol";
+import "./ProposalsLibrary.sol";
+import "./SecurityLibrary.sol";
+import "./DataVerifiable.sol";
 
 contract Organisation is DataVerifiable
 {
@@ -17,7 +19,7 @@ contract Organisation is DataVerifiable
 
   modifier onlyAdmins {
     if (!eternalStorage.isUserAdmin(msg.sender)) throw;
-    _
+    _;
   }
 
   function addProposal(bytes32 _name)
@@ -43,10 +45,10 @@ contract Organisation is DataVerifiable
     eternalStorage.updateProposal(_id, _name);
   }
 
-  function fundProposal(uint256 _id)
+  function fundProposal(uint256 _id) payable
   {
     eternalStorage.fundProposal(_id);
-	}
+  }
 
   function setProposalFund(uint256 _id, uint256 _eth)
   {

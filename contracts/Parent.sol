@@ -1,8 +1,10 @@
-import "Organisation.sol";
-import "OrganisationUpdated.sol";
-import "TokenLedger.sol";
-import "EternalStorage.sol";
-import "SecurityLibrary.sol";
+pragma solidity ^0.4.8;
+
+import "./Organisation.sol";
+import "./OrganisationUpdated.sol";
+import "./TokenLedger.sol";
+import "./EternalStorage.sol";
+import "./SecurityLibrary.sol";
 
 contract Parent {
 

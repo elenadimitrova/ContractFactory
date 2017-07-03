@@ -1,4 +1,6 @@
-import "EternalStorage.sol";
+pragma solidity ^0.4.8;
+
+import "./EternalStorage.sol";
 
 library ProposalsLibrary {
   event ProposalAdded(bytes32 key, uint256 count, uint256 when);

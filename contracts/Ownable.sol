@@ -1,10 +1,12 @@
+pragma solidity ^0.4.8;
+
 contract Ownable {
   address public owner = msg.sender;
 
   /// @notice check if the caller is the owner of the contract
 	modifier onlyOwner {
 		if (msg.sender != owner) throw;
-		_
+		_;
 	}
 
   /// @notice change the owner of the contract
