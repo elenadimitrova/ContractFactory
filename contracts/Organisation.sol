@@ -12,14 +12,14 @@ contract Organisation is DataVerifiable
   using SecurityLibrary for address;
   address public eternalStorage;
 
-  function Organisation(address _tokenLedger, address _eternalStorage) {
-    tokenLedger = ITokenLedger(_tokenLedger);
-    eternalStorage = _eternalStorage;
-  }
-
   modifier onlyAdmins {
     if (!eternalStorage.isUserAdmin(msg.sender)) throw;
     _;
+  }
+
+  function setDataStore(address _tokenLedger, address _eternalStorage) {
+    tokenLedger = ITokenLedger(_tokenLedger);
+    eternalStorage = _eternalStorage;
   }
 
   function addProposal(bytes32 _name)
